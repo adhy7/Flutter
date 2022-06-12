@@ -35,7 +35,7 @@ class Homepage extends StatelessWidget {
       data.forEach((element) {
         allUser.add(element);
       });
-      print(allUser);
+
 
     } catch (e) {
       print("terjadi error");
