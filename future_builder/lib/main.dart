@@ -38,7 +38,6 @@ class Homepage extends StatelessWidget {
 
     } catch (e) {
       print("terjadi error");
-      print(e);
     }
   }
 
