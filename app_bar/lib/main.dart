@@ -11,7 +11,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -25,146 +24,102 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  bool popUpMenu1 = false;
-  bool popUpMenu2 = false;
-  bool popUpMenu3 = false;
-  bool popUpMenu4 = false;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  @override
+  Widget build(BuildContext context) {
+    int persen = 0;
+    return Scaffold(
+      body: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Text(
+                  'Setelah mengisi data diri,\nAnda dapat langsung mengajukan pinjaman',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.green[100]),
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              const ProgressBar(
+                value: 0.9,
+              ),
+             
+            ],
+          ),
+        ],
+      ),
+    );
   }
+}
+
+class ProgressBar extends StatelessWidget {
+  const ProgressBar({
+    Key? key,
+    this.value,
+  }) : super(key: key);
+  final double? value;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-        actions: [
-          PopupMenuButton(
-              offset: const Offset(-40, 50),
-              onSelected: (value) {
-                if (value == 1) {
-                  setState(() {
-                    popUpMenu1 = !popUpMenu1;
-                  });
-                } else if (value == 2) {
-                  setState(() {
-                    popUpMenu2 = !popUpMenu2;
-                  });
-                } else if (value == 3) {
-                  setState(() {
-                    popUpMenu3 = !popUpMenu3;
-                  });
-                } else {
-                  setState(() {
-                    popUpMenu4 = !popUpMenu4;
-                  });
-                }
-              },
-              itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 1,
-                      child: Text(
-                        'Item 1',
-                        style: popUpMenu1
-                            ? TextStyle(color: Colors.grey)
-                            : TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 2,
-                      child: Text(
-                        'Item 2',
-                        style: popUpMenu2
-                            ? TextStyle(color: Colors.grey)
-                            : TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 3,
-                      child: Text(
-                        'Item 3',
-                        style: popUpMenu3
-                            ? TextStyle(color: Colors.grey)
-                            : TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 4,
-                      child: Text(
-                        'Item 4',
-                        style: popUpMenu4
-                            ? TextStyle(color: Colors.grey)
-                            : TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ])
-        ],
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+    return SizedBox(
+      width: 300,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+          
+              Container(
+              width: double.infinity,
+              height: 40,
+              child: Transform.translate(
+                offset: Offset((value! * 300) - 20, 0),
+                child: Text('${(value! * 100)} %'),
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            LinearProgressIndicator(
+              minHeight: 10,
+              value: value,
+              color: Colors.green[300],
+              backgroundColor: Colors.green[100],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class CustomClipPath extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+
+    path.close();
+    path.lineTo(-5, 0);
+    path.lineTo(0, 10);
+    path.lineTo(5, 0);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
   }
 }
